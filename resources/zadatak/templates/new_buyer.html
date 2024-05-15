@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:insert="~{fragments/head}"></th:block>
+
+<head>
+  <title>New Buyer</title>
+</head>
+
+<body>
+  <th:block th:insert="~{fragments/sidebar}"></th:block>
+  <div class="container-fluid">
+    <div class="container">
+      <h1 class="centered-text">New Buyer</h1>
+      <div>
+        <h3 class="btn-link"><a href="/admin/"><i class="bi bi-shop"></i><span class="text">Shop</span></a></h3>
+        <h3 class="btn-link"><a href="/admin/buyer/"><i class="bi bi-people"></i><span class="text">Return</span></a>
+        </h3>
+      </div>
+      <form method="post" action="/admin/buyer/new" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="first_name">First Name:</label>
+          <input type="text" class="form-control" id="first_name" name="first_name" required>
+        </div>
+        <div class="form-group">
+          <label for="last_name">Last Name:</label>
+          <input type="text" class="form-control" id="last_name" name="last_name" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </div>
+  <div>
+    <th:block th:insert="~{fragments/footer}"></th:block>
+</div>
+</body>
+
+</html>

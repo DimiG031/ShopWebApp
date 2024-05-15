@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:insert="~{fragments/head}"></th:block>
+
+<head>
+  <title>Edit Product</title>
+</head>
+
+<body>
+  <th:block th:insert="~{fragments/sidebar}"></th:block>
+  <div class="container-fluid">
+    <div class="container">
+      <div>
+        <h3 class="btn-link"><a href="/admin/"><i class="bi bi-shop"></i><span class="text">Shop</span></a></h3>
+        <h3 class="btn-link"><a href="/admin/product/"><i class="bi bi-stack"></i><span class="text">Return</span></a>
+        </h3>
+      </div>
+      <form method="post" action="/admin/product/edit" enctype="multipart/form-data">
+        <input type="hidden" th:value="${product.product_id}" name="product_id" />
+        <div class="form-group">
+          <label for="productName">Product Name:</label>
+          <input type="text" class="form-control" id="productName" name="productName" th:value="${product.productName}"
+            required>
+        </div>
+        <div class="form-group">
+          <label for="price">Price:</label>
+          <input type="number" class="form-control" id="price" name="price" th:value="${product.price}" required>
+        </div>
+        <div class="form-group">
+          <label for="quantity">Quantity:</label>
+          <input type="number" class="form-control" id="quantity" name="quantity" th:value="${product.quantity}">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </div>
+  <div>
+    <th:block th:insert="~{fragments/footer}"></th:block>
+</div>
+</body>
+
+</html>

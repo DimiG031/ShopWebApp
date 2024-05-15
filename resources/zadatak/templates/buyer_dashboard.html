@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:insert="~{fragments/head}"></th:block>
+
+<head>
+    <title>Buyer Dashboard</title>
+</head>
+<style>
+    .container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .centered-text {
+        text-align: center;
+    }
+
+    .table-container {
+        width: 48%;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
+
+<body>
+    <th:block th:insert="~{fragments/sidebar}"></th:block>
+    <div class="container-fluid">
+        <h1 class="centered-text">Buyer's Dashboard</h1>
+        <p class="centered-text">
+            <a href="/admin/buyer/new" class="btn btn-sm btn-primary">New Buyer</a>
+        </p>
+        <div class="container">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="buyer : ${buyers}">
+                        <td th:text="${buyer.buyer_id}"></td>
+                        <td th:text="${buyer.first_name}"></td>
+                        <td th:text="${buyer.last_name}"></td>
+                        <td>
+                            <div class="btn-group">
+                                <a th:href="'/admin/buyer/details/' + ${buyer.buyer_id}" class="btn btn-sm btn-primary">
+                                    Details
+                                </a>
+                                <a th:href="'/admin/buyer/edit/' + ${buyer.buyer_id}" class="btn btn-sm btn-warning">
+                                    Edit
+                                </a>
+                                <a th:href="'/admin/buyer/delete/' + ${buyer.buyer_id}" class="btn btn-sm btn-danger"
+                                    onclick="return confirm('Are you sure you want to delete this buyer?')">
+                                    Delete
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <th:block th:insert="~{fragments/buyers_charts}"></th:block>
+        </div>
+    </div>
+
+    <div>
+        <th:block th:insert="~{fragments/footer}"></th:block>
+    </div>
+</body>
+
+</html>

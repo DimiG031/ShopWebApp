@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:insert="~{fragments/head}"></th:block>
+
+<head>
+    <title>Product Details</title>
+</head>
+
+<body>
+    <th:block th:insert="~{fragments/sidebar}"></th:block>
+    <div class="container-fluid">
+        <div class="container">
+            <div>
+                <h3 class="btn-link"><a href="/admin/"><i class="bi bi-shop"></i><span class="text">Shop</span></a></h3>
+                <h3 class="btn-link"><a href="/admin/product/"><i class="bi bi-stack"></i><span
+                            class="text">Return</span></a>
+                </h3>
+            </div>
+            <h1 class="centered-text">Product Detail</h1>
+            <table class="table table-bordered">
+                <tr th:each="product : ${products}">
+                    <td th:text="'Product ID: ' + ${product.product_id}"></td>
+                    <td th:text="'Product Name: ' + ${product.productName}"></td>
+                    <td th:text="'Price: ' + ${product.price}"></td>
+                    <td th:text="'Quantity: ' + ${product.quantity}"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div>
+        <th:block th:insert="~{fragments/footer}"></th:block>
+    </div>
+</body>
+
+</html>

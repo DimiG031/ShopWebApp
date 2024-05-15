@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:insert="~{fragments/head}"></th:block>
+
+<head>
+  <title>Edit Buyer</title>
+</head>
+
+<body>
+  <th:block th:insert="~{fragments/sidebar}"></th:block>
+  <div class="container-fluid">
+    <div class="container">
+      <div>
+        <h3 class="btn-link"><a href="/admin/"><i class="bi bi-shop"></i><span class="text">Shop</span></a></h3>
+        <h3 class="btn-link"><a href="/admin/buyer/"><i class="bi bi-people"></i><span class="text">Return</span></a>
+        </h3>
+      </div>
+      <form method="post" action="/admin/buyer/edit" enctype="multipart/form-data">
+        <input type="hidden" th:value="${buyer.buyer_id}" name="buyer_id" />
+        <div class="form-group">
+          <label for="first_name">First Name:</label>
+          <input type="text" class="form-control" id="first_name" name="first_name" th:value="${buyer.first_name}"
+            required>
+        </div>
+        <div class="form-group">
+          <label for="last_name">Last Name:</label>
+          <input type="text" class="form-control" id="last_name" name="last_name" th:value="${buyer.last_name}"
+            required>
+        </div>
+        <div class="form-group">
+          <label for="total_purchases">Total Purchases:</label>
+          <input type="number" class="form-control" id="total_purchases" name="total_purchases"
+            th:value="${buyer.total_purchases}" required>
+        </div>
+        <div class="form-group">
+          <label for="total_quantity">Total Quantity:</label>
+          <input type="number" class="form-control" id="total_quantity" name="total_quantity"
+            th:value="${buyer.total_quantity}">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </div>
+  <div>
+    <th:block th:insert="~{fragments/footer}"></th:block>
+</div>
+</body>
+
+</html>

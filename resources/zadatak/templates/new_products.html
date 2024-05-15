@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:insert="~{fragments/head}"></th:block>
+
+<head>
+    <title>New Product</title>
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500');
+
+    body {
+        overflow-x: hidden;
+        font-family: 'Roboto', sans-serif;
+        font-size: 16px;
+    }
+
+    /* Toggle Styles */
+
+    #viewport {
+        padding-left: 250px;
+        -webkit-transition: all 0.5s ease;
+        -moz-transition: all 0.5s ease;
+        -o-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+    }
+
+    #content {
+        width: 100%;
+        position: relative;
+        margin-right: 0;
+    }
+
+    /* Sidebar Styles */
+
+    #sidebar {
+        z-index: 1000;
+        position: fixed;
+        left: 250px;
+        width: 250px;
+        height: 100%;
+        margin-left: -250px;
+        overflow-y: auto;
+        background: #37474F;
+        -webkit-transition: all 0.5s ease;
+        -moz-transition: all 0.5s ease;
+        -o-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+    }
+
+    #sidebar header {
+        background-color: #263238;
+        font-size: 20px;
+        line-height: 52px;
+        text-align: center;
+    }
+
+    #sidebar header a {
+        color: #fff;
+        display: block;
+        text-decoration: none;
+    }
+
+    #sidebar header a:hover {
+        color: #fff;
+    }
+
+    #sidebar .nav {}
+
+    #sidebar .nav a {
+        background: none;
+        border-bottom: 1px solid #455A64;
+        color: #CFD8DC;
+        font-size: 26px;
+        padding: 16px 24px;
+    }
+
+    #sidebar .nav a:hover {
+        background: none;
+        color: #ECEFF1;
+    }
+
+    #sidebar .nav a i {
+        margin-right: 16px;
+    }
+</style>
+
+<body>
+    <div id="viewport">
+        <!-- Sidebar -->
+        <div id="sidebar">
+            <header>
+                <a href="#">My App</a>
+            </header>
+            <ul class="nav">
+                <li>
+                    <a href="/admin/">
+                        <i class="zmdi zmdi-view-dashboard"></i> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/buyer/">
+                        <i class="zmdi zmdi-male-female"></i> Buyers
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/product/">
+                        <i class="zmdi zmdi-group"></i> Products
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/sales/">
+                        <i class="zmdi zmdi-shopping-cart"></i> Sales
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="zmdi zmdi-info-outline"></i> About
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="zmdi zmdi-settings"></i> Services
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="zmdi zmdi-comment-more"></i> Contact
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- Content -->
+        <div id="content">
+            <nav class="p-2 bg-light d-flex justify-content-between">
+                <p class="mx-3 btn btn-link"><a href="/admin/"><i class="bi bi-shop"></i><span
+                            class="text">Shop</span></a>
+                </p>
+                <p class="mx-3 btn btn-link"><a href="/admin/buyer/"><i class="bi bi-people"></i><span
+                            class="text">Buyers</span></a></p>
+                <p class="mx-3 btn btn-link"><a href="/admin/product/"><i class="bi bi-stack"></i><span
+                            class="text">Products</span></a></p>
+                <p class="mx-3 btn btn-link"><a href="/admin/sales/"><i class="bi bi-cart"></i><span class="text">Go to
+                            Sales</span></a></p>
+                <div class="flex-grow-1"></div>
+                <p class="btn btn-link"><a href="/logout"><i class="bi bi-box-arrow-right"></i><span
+                            class="text">Logout</span></a>
+                </p>
+            </nav>
+            <div class="container-fluid">
+                <div class="container">
+                    <h1 class="centered-text">New Product</h1>
+                    <div>
+                        <h3 class="btn-link"><a href="/admin/"><i class="bi bi-shop"></i><span
+                                    class="text">Shop</span></a></h3>
+                        <h3 class="btn-link"><a href="/admin/product/"><i class="bi bi-stack"></i><span
+                                    class="text">Return</span></a>
+                        </h3>
+                    </div>
+                    <form action="/admin/product/new" method="post">
+                        <div class="form-group">
+                            <label for="productName">Product name:</label>
+                            <input type="text" class="form-control" id="productName" name="productName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="price">Price:</label>
+                            <input type="number" class="form-control" id="price" name="price" step="0.01" min="1"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="quantity">Quantity:</label>
+                            <input type="number" class="form-control" id="quantity" name="quantity" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <th:block th:insert="~{fragments/footer}"></th:block>
+    </div>
+
+</body>
+
+</html>

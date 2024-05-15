@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:insert="~{fragments/head}"></th:block>
+<style>
+    body {
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+
+    }
+</style>
+<body>
+    <div th:if="${status == 'success'}">
+        <h1 class="text-success">Success</h1>
+        <p th:text="${message}"></p>
+    </div>
+    <div th:if="${status == 'error'}">
+        <h1 class="text-danger">Error</h1>
+        <p th:text="${message}"></p>
+    </div>
+    <p><a href="/admin/">Return to dashboard</a></p>
+</body>
+
+</html>

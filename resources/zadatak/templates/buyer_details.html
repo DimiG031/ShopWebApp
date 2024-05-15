@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:insert="~{fragments/head}"></th:block>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<head>
+    <title>Buyer Details</title>
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<style>
+    .details-table {
+        display: none;
+    }
+</style>
+
+<body>
+    <th:block th:insert="~{fragments/sidebar}"></th:block>
+    <div class="container-fluid">
+        <div class="container">
+            <div>
+                <h3 class="btn-link"><a href="/admin/"><i class="bi bi-shop"></i><span class="text">Shop</span></a></h3>
+                <h3 class="btn-link"><a href="/admin/buyer/"><i class="bi bi-people"></i><span
+                            class="text">Return</span></a>
+                </h3>
+            </div>
+            <h1 class="centered-text" th:text="${buyer.full_name}"></h1>
+            <table class="table">
+                <tr>
+                    <td th:text="'First Name: ' + ${buyer.first_name}"></td>
+                    <td th:text="'Last Name: ' + ${buyer.last_name}"></td>
+                    <td th:text="'Total Purchases: ' + ${buyer.total_purchases}"></td>
+                    <td th:text="'Total Quantity: ' + ${buyer.total_quantity}"></td>
+                </tr>
+                <tr th:if="${not #lists.isEmpty(totalPrice)}">
+                    <td colspan="2"><strong>Total money spend:</strong></td>
+                    <td th:text="${totalPriceSum}"></td>
+                </tr>
+                <tr th:unless="${not #lists.isEmpty(totalPrice)}">
+                    <td colspan="1"><strong>Total money spend:</strong></td>
+                    <td>0</td>
+                </tr>
+            </table>
+            <h2>My purchases</h2>
+            <th:block th:if="${firstDetail != null}" th:each="first,stat : ${firstDetail}">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Sale</th>
+                            <th>Product purchased</th>
+                            <th>Date of Sale</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td th:text="${stat.count}"></td>
+                            <td th:text="${first.product_count}"></td>
+                            <td th:text="${first.saleDate}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button class="btn btn-default toggle-details">Show Details</button>
+                <div class="detail-table" style="display: none;">
+                    <table class="table table-bordered accordion">
+                        <tbody>
+                            <tr>
+                                <th>Sale ID</th>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Money spend</th>
+                            </tr>
+                            <tr th:each="second : ${secondDetail}" th:if="${second.saleId == first.saleId}">
+                                <td th:text="${second.saleId}"></td>
+                                <td th:text="${second.productName}"></td>
+                                <td th:text="${second.quantitySold}"></td>
+                                <td th:text="${second.totalPricePerProduct}"></td>
+                            </tr>
+                            <tr th:each="third : ${thirdDetail}" th:if="${third.sale_id == first.saleId}">
+                                <td colspan="3"><strong>Total money spend:</strong></td>
+                                <td th:text="${third.total_price}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <hr class="border border-primary border-3 opacity-75">
+            </th:block>
+            <th:block th:if="${allListsEmpty}">
+                <p><i>There are currently no purchases for this buyer.</i></p>
+            </th:block>
+        </div>
+    </div>
+    <div>
+        <th:block th:insert="~{fragments/footer}"></th:block>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('.toggle-details').click(function () {
+                $(this).next('.detail-table').toggle();
+                $(this).text(function (_, text) {
+                    return text === 'Show Details' ? 'Hide Details' : 'Show Details';
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

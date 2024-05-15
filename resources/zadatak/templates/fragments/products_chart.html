@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Chart </title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<style>
+    .charts {
+        margin-left: 50px;
+        margin-bottom: 100px;
+        margin-right: 50px;
+    }
+</style>
+
+<body>
+    <div class="charts">
+        <canvas id="columnChart" width="800px" height="400px"></canvas>
+    </div>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+
+        var productsData = /*[[${data.products}]]*/[];
+
+        var labels = productsData.map(function (product) {
+            return product.productName;
+        });
+        var quantityData = productsData.map(function (product) {
+            return product.quantity;
+        });
+
+        var ctx = document.getElementById('columnChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Quantity of Product',
+                        data: quantityData,
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        /*]]>*/
+    </script>
+</body>
+
+</html>

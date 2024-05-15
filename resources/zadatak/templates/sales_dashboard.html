@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:insert="~{fragments/head}"></th:block>
+
+<head>
+    <title>Sale Dashboard</title>
+</head>
+<style>
+    .container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .centered-text {
+        text-align: center;
+    }
+
+    .table-container {
+        width: 48%;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    #salesTable {
+
+        margin: 20px;
+        padding: 20px;
+        margin-left: 40px;
+        margin-right: 40px;
+
+    }
+
+    #salesTableContainer {
+        margin-top: 100px;
+        width: auto;
+        padding: 10px;
+        margin: 10px;
+        margin-left: 40px;
+        margin-right: 40px;
+
+    }
+</style>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
+</head>
+
+<body>
+    <th:block th:insert="~{fragments/sidebar}"></th:block>
+    <div class="container-fluid">
+        <h1 class="centered-text">Sales Dashboard</h1>
+        <div class="container">
+            <div class="table-container table-hover" style="min-height: 400px;">
+                <form id="saleForm" action="/admin/sales/" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="buyer_id">Buyers <button type="button" onclick="makeSale()"
+                                class="btn btn-sm btn-primary">Make Sale</button>
+                        </label>
+                        <select class="multiselect-field" name="buyer_id" id="buyer_id_save" multiple>
+                            <option th:each="buyer : ${data.buyers}" th:text="${buyer.fullName}"
+                                th:value="${buyer.buyerId}">
+                            </option>
+                        </select>
+                    </div>
+                </form>
+                <p id="saleMessage">Select a buyer to make a <a href="#" onclick="makeSale()">new sale.</a></p>
+            </div>
+            <div class="table-container">
+                <table name="products" class="table table-striped">
+                    <h2>Products</h2>
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="product : ${data2.products}">
+                            <td th:text="${product.productName}"></td>
+                            <td th:text="${product.price}"></td>
+                            <td th:text="${product.quantity}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="salesTableContainer" class="table-container">
+            <table id="salesTable" name="sales" class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Buyer</th>
+                        <th>Product purchases</th>
+                        <th>Money spend</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="sale : ${data3.sales}">
+                        <td th:text="${sale.saleId}">
+                        </td>
+                        <td th:text="${sale.fullName}"></td>
+                        <td th:text="${sale.product_count}"></td>
+                        <td th:text="${sale.total_price}"></td>
+                        <td th:text="${sale.saleDate}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div>
+        <th:block th:insert="~{fragments/footer}"></th:block>
+    </div>
+    
+    <script>
+        function makeSale() {
+            var selectElement = document.getElementById("buyer_id_save");
+            var selectedOption = selectElement.options[selectElement.selectedIndex];
+
+            if (!selectedOption) {
+                alert('First select a buyer.');
+                return;
+            }
+
+
+            var buyerId = selectedOption.value;
+            var fullName = selectedOption.textContent;
+
+            document.cookie = "selected_buyer_id=" + buyerId;
+            document.cookie = "selected_full_name=" + fullName;
+            console.log("Cookies set: ", document.cookie);
+
+
+
+            var redirectUrl = "/admin/sales/new";
+            window.location.href = redirectUrl;
+            console.log('Selected buyer ID:', buyerId);
+            console.log('Selected full name:', fullName);
+        }
+
+        document.getElementById('buyer_id_save').addEventListener('change', function () {
+            var options = this.options;
+            for (var i = 0; i < options.length; i++) {
+                if (options[i].selected && i !== this.selectedIndex) {
+                    options[i].selected = false;
+                }
+            }
+        });
+
+        $(document).ready(function () {
+            $('#salesTable').DataTable();
+        });
+    </script>
+
+
+</body>
+
+</html>

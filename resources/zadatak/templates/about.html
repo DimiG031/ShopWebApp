@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:insert="~{fragments/head}"></th:block>
+
+<head>
+    <title>About</title>
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    h1,
+    h2,
+    h3 {
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    p {
+        margin-bottom: 20px;
+    }
+
+    a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<body>
+    <th:block th:insert="~{fragments/sidebar}"></th:block>
+    <div class="container">
+        <h1>About App</h1>
+        <h2>Overview</h2>
+        <p>Our app is designed to streamline the management of sales, buyers, and products for businesses of all sizes.
+            Whether you're a small startup or a large enterprise, our intuitive interface and powerful features are
+            tailored to meet your needs.
+            App is made by IT Academy Student.
+        </p>
+
+        <h2>Features</h2>
+        <p>Sales Management: Easily track sales transactions, monitor inventory levels, and analyze sales data to make
+            informed business decisions.
+            Buyer Insights: Gain valuable insights into buyer behavior, preferences, and purchase history to enhance
+            customer relationships and drive sales.
+            Product Catalog: Manage your product catalog efficiently, including pricing, stock levels, and product
+            details, all in one place.
+            Reporting and Analytics: Generate comprehensive reports and leverage advanced analytics tools to visualize
+            trends, identify opportunities, and optimize performance.</p>
+        <h2>Mission</h2>
+        <p>Our mission is to empower businesses with the tools they need to succeed in today's competitive marketplace.
+            We're committed to delivering user-friendly solutions that drive efficiency, productivity, and growth.</p>
+
+        <h2>Meet the Team</h2>
+        <p>Goran Dimitrijevic</p>
+
+        <h2>Contact Us</h2>
+        <p>For inquiries, feedback, or support, please contact us at <a
+                href="mailto:gorandimitrijevic031@gmail.com">gorandimitrijevic031@gmail.com</a> or visit our website at
+            <a href="https://www.it-akademija.com" target="_blank">ITAkademy</a>.
+        </p>
+    </div>
+    <div>
+        <th:block th:insert="~{fragments/footer}"></th:block>
+    </div>
+</body>
+
+</html>

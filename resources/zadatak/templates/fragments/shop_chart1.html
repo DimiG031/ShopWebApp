@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Charts</title>
+</head>
+
+<body>
+    <div id="donutchart" style="width: 800px; height: 600px; display: inline-block;"></div>
+    <div id="barchart_div" style="width: 800px; height: 600px; display: inline-block;"></div>
+    <script type="text/javascript" th:inline="javascript">
+        /*<![CDATA[*/
+        google.charts.load("current", { packages: ["corechart"] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var chartData = /*[[${chartData.chartData}]]*/[];
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Product');
+            data.addColumn('number', 'Total Quantity');
+
+            /*[# th:if="${chartData.chartData != null and chartData.chartData.size() > 0}"]*/
+            data.addRows([
+                /*[# th:each="product : ${chartData.chartData}"]*/
+                ['/*[[${product.productName}]]*/'.replace(/\/\*|"|\*\//g, ''), /*[[${product.totalQuantity}]]*/],
+                /*[/]*/
+            ]);
+            /*[/]*/
+
+            var optionsPie = {
+                title: 'Product Sales Distribution',
+                pieHole: 0.4,
+            };
+
+            var chartPie = new google.visualization.PieChart(document.getElementById('donutchart'));
+            chartPie.draw(data, optionsPie);
+
+
+            var optionsBar = {
+                title: 'Product Sales Distribution',
+                legend: { position: 'none' },
+            };
+
+            var chartBar = new google.visualization.BarChart(document.getElementById('barchart_div'));
+            chartBar.draw(data, optionsBar);
+        }
+        /*]]>*/
+    </script>
+</body>
+
+</html>

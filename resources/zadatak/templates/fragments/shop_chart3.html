@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Charts</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<style>
+    .chart3 {
+        margin-left: 50px;
+        margin-bottom: 100px;
+        margin-right: 50px;
+        padding: 20px;
+        height: auto;
+    }
+</style>
+
+<body>
+    <div class="chart3">
+        <canvas id="columnChart" style="width: auto;"></canvas>
+    </div>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+
+        var salesJson = /*[[${totalQuantityJson}]]*/ '';
+
+        try {
+            if (salesJson.trim() !== '') {
+                var salesData = JSON.parse(salesJson);
+                var labels = salesData.map(function (sale) {
+                    return sale.saleDate;
+                });
+                var quantities = salesData.map(function (sale) {
+                    return sale.quantity_sum;
+                });
+
+                var ctx = document.getElementById('columnChart').getContext('2d');
+                var chart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Total Quantity per Days',
+                            data: quantities,
+                            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        title: 'Sales Data by Total Quantity',
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            } else {
+                console.log('Total Quantity JSON is empty.');
+            }
+        } catch (error) {
+            console.error('Error parsing total quantity JSON:', error);
+        }
+
+        /*]]>*/
+    </script>
+</body>
+
+</html>

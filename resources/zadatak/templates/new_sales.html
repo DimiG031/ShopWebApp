@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:insert="~{fragments/head}"></th:block>
+
+<head>
+    <title>New Sale</title>
+</head>
+
+<body>
+    <th:block th:insert="~{fragments/sidebar}"></th:block>
+    <div class="container-fluid">
+        <div class="container">
+            <h1 class="centered-text">Welcome to sales</h1>
+            <div>
+                <h3 class="btn-link"><a href="/admin/"><i class="bi bi-shop"></i><span class="text">Shop</span></a></h3>
+                <h3 class="btn-link"><a href="/admin/sales/"><i class="bi bi-cart"></i><span
+                            class="text">Return</span></a>
+                </h3>
+            </div>
+            <table class="table">
+                <thead>
+                    <td class="detail-cell">
+                        <div>
+                            <p>Buyer ID:<span id="buyerIdPlaceholder"></span></p>
+                        </div>
+                        <div>
+                            <p>Make new sale for: <span id="fullNamePlaceholder"></span></p>
+                        </div>
+                        <div>
+                            <label for="date-of-sale">Date of sale:</label>
+                            <input type="date" id="date-of-sale" name="date-of-sale" required>
+                        </div>
+                    </td>
+                    <td class="cart-cell">
+                        <div id="cart-container">
+                            <h4>Your Cart</h4>
+                            <table id="cart-table" class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Product Name</th>
+                                        <th>Quantity</th>
+                                        <th>Total per product</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="1"></td>
+                                        <td>Quantity:</td>
+                                        <td id="totalQuantity">0</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="1"></td>
+                                        <td>Total:</td>
+                                        <td id="totalPrice">0</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <button onclick="clearCart()">Clear Cart</button>
+                            <button onclick="submitSale()">Submit Sale</button>
+                        </div>
+                    </td>
+                </thead>
+            </table>
+            <div>
+                <div id="error-message"></div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Product Name</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <th:block th:each="product : ${data2.products}">
+                            <tr>
+                                <td th:text="${product.product_id}" class="data-product-id"></td>
+                                <td th:text="${product.productName}" class="product-name"></td>
+                                <td th:text="${product.price}" class="product-price"></td>
+                                <td th:text="${product.quantity}" class="product-quantity"></td>
+                                <td>
+                                    <button class="add-to-cart-btn">
+                                        Add to cart</button>
+                                </td>
+                            </tr>
+                        </th:block>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div>
+        <th:block th:insert="~{fragments/footer}"></th:block>
+    </div>
+    <script>
+        var cartItems = [];
+        var dateOfSale = document.getElementById('date-of-sale');
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var addButtons = document.querySelectorAll('.add-to-cart-btn');
+
+            addButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    var productRow = this.closest('tr');
+                    var productId = productRow.querySelector('.data-product-id').textContent;
+                    var productName = productRow.querySelector('.product-name').textContent;
+                    var price = parseFloat(productRow.querySelector('.product-price').textContent);
+                    var inventoryQuantity = parseInt(productRow.querySelector('.product-quantity').textContent);
+                    addToCart(productId, productName, price, inventoryQuantity);
+                });
+            });
+        });
+
+        function addToCart(productId, productName, price, inventoryQuantity) {
+            productId = parseInt(productId);
+            var existingItem = cartItems.find(item => item.productId === productId);
+
+
+            if (existingItem) {
+                if (existingItem.quantity >= inventoryQuantity) {
+                    alert("No more " + productName + " in inventory!")
+                    return
+                }
+                existingItem.quantity++;
+                existingItem.total = existingItem.quantity * price;
+            } else {
+                if (inventoryQuantity < 1) {
+                    alert("No more " + productName + " in inventory!")
+                    return
+                }
+                cartItems.push({ productId, productName, price, quantity: 1, total: price });
+            }
+            combineCartItems();
+            updateCartView();
+        }
+
+        function updateCartView() {
+            var cartTable = document.getElementById('cart-table').getElementsByTagName('tbody')[0];
+            cartTable.innerHTML = '';
+
+            var totalQuantity = 0;
+
+            cartItems.forEach(item => {
+                var row = cartTable.insertRow();
+                row.innerHTML = `<td>${item.productName}</td><td>${item.quantity}</td><td>${item.total}</td><td><button onclick="removeFromCart('${item.productName}', ${item.price})">Remove</button></td>`;
+
+                var productIdInput = document.createElement('input');
+                productIdInput.type = 'hidden';
+                productIdInput.name = 'productId';
+                productIdInput.value = item.productId;
+                row.appendChild(productIdInput);
+
+                totalQuantity += item.quantity;
+            });
+
+            document.getElementById('totalQuantity').textContent = totalQuantity;
+            var totalPrice = cartItems.reduce((total, item) => total + item.total, 0);
+            document.getElementById('totalPrice').textContent = totalPrice.toFixed(2);
+            console.log(typeof totalPrice)
+            console.log(totalPrice)
+        }
+
+        function removeFromCart(productName, price) {
+            var index = cartItems.findIndex(item => item.productName === productName);
+            if (index !== -1) {
+                cartItems[index].quantity--;
+                if (cartItems[index].quantity === 0) {
+                    cartItems.splice(index, 1);
+                } else {
+                    cartItems[index].total -= price;
+                }
+                updateCartView();
+            }
+        }
+
+        function clearCart() {
+            cartItems = [];
+            updateCartView();
+            location.reload();
+        }
+
+        function submitSale() {
+            var dateOfSaleInput = document.getElementById('date-of-sale');
+            var dateOfSale = dateOfSaleInput.value
+            if (!dateOfSale) {
+                alert('Please select a date for the sale.');
+                return;
+            }
+
+            if (!cartItems.length) {
+                alert("Please add items in cart to continue.")
+                return;
+            }
+            var totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
+            var totalPriceString = document.getElementById('totalPrice').textContent.trim();
+            var totalPrice = parseFloat(totalPriceString);
+            console.log(typeof totalPrice, totalPrice);
+            console.log(totalPrice)
+            var totalPricePerProduct = {};
+            cartItems.forEach(item => {
+                var price_per_product = (item.quantity * item.price).toFixed(2);
+                totalPricePerProduct[item.productId] = price_per_product;
+
+            });
+            console.log('Total price per product:', totalPricePerProduct);
+            var saleData = {
+                cart: cartItems.map(item => ({
+                    id: item.productId,
+                    name: item.productName,
+                    price: item.price,
+                    quantity: item.quantity,
+                    totalPrice: totalPrice,
+                    totalQuantity: totalQuantity,
+                    totalPricePerProduct: totalPricePerProduct
+                })),
+                dateOfSale: dateOfSale
+
+            };
+            console.log(typeof productId)
+            console.log(typeof totalPrice)
+            console.log(totalPrice)
+            console.log(typeof totalQuantity)
+            console.log(totalQuantity)
+            console.log(typeof totalPricePerProduct)
+            console.log(totalPricePerProduct)
+
+            console.log(typeof dateOfSale)
+            fetch('/admin/sales/new', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(saleData)
+            }).then(response => {
+                window.location.href = '/admin/sales/';
+                cartItems = [];
+                updateCartView();
+            }).catch(error => {
+                console.error('Error:', error);
+            });
+
+        }
+
+        function combineCartItems() {
+            var combinedCartItems = [];
+            cartItems.forEach(item => {
+                var existingItemIndex = combinedCartItems.findIndex(combinedItem => combinedItem.productId === item.productId);
+                if (existingItemIndex !== -1) {
+                    combinedCartItems[existingItemIndex].quantity += item.quantity;
+                    combinedCartItems[existingItemIndex].total += item.total;
+                } else {
+                    combinedCartItems.push(item);
+                }
+            });
+            cartItems = combinedCartItems;
+        }
+
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        var fullName = getCookie('selected_full_name');
+        var buyerId = getCookie('selected_buyer_id')
+
+        document.getElementById('fullNamePlaceholder').textContent = fullName;
+        document.getElementById('buyerIdPlaceholder').textContent = buyerId;
+    </script>
+</body>
+
+</html>

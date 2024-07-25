@@ -23,6 +23,6 @@ Shop Web App Java, MySQL, HTTP , CSS, JavaScript:
 <img src="" height="80%" width="80%" alt="Screanshot 3"/>
 <img src="" height="80%" width="80%" alt="Screanshot 4"/>
   <br/>
-Digital Clock:
+Shop Web App:
   <br/>
 <img src="" height="80%" width="80%" alt=" Screanshot 1"/>

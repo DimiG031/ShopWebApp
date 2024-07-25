@@ -7,7 +7,10 @@ Project is a Shop Web App.
 
 <h2>Languages and Utilities Used</h2>
 
-- <b>Java</b> 
+- <b>Java</b>
+- <b>MySQL<b>
+- <b>HTML, CSS<b>
+- <b>JavaScript<b>
 
 <h2>Environments Used </h2>
 

@@ -61,7 +61,8 @@ This project is a **Shop Web Application** developed using a combination of back
 - **Payment Integration:** Add payment gateway integration for processing transactions.
 - **Search Functionality:** Implement product search and filtering options.
 
-✨ **Author:** [Goran Dimitrijević Dimi](https://github.com/GoranDimitrijevicDimi)
+---
+✨ **Author:** [Goran Dimitrijevic Dimi](https://dimig031.github.io/)
 
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
